@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var db = require('monk')('localhost/authenticate-people-db');
+var db = require('monk')((process.env.MONGOLAB_URI || 'localhost/authenticate-people-db');
 var peopleCollection = db.get('people');
 var bcrypt = require('bcrypt');
 require('dotenv').load();
