@@ -1,0 +1,13 @@
+if errors
+  include ../nav_notLoggedIn
+    .container
+      .alert.alert-danger
+        for error in errors
+          li= error
+if !errors
+  include ../nav_loggedIn
+    .container
+      h1= title
+
+include ../footer
+

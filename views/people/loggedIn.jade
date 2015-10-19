@@ -1,0 +1,15 @@
+if errors
+  include ../nav_notLoggedIn
+    .container
+      .alert.alert-danger
+        for error in errors
+          li= error
+if !errors
+  include ../nav_loggedIn
+    .container
+      h1 Welcome #{email_session}
+      p You are now logged in!
+      a(href='/students') Students  
+
+include ../footer
+
