@@ -1,12 +1,15 @@
 include ../nav_notLoggedIn
   .container
     .row
-      h1= title
-      if errors
-        .alert.alert-danger
-          for error in errors
-            li= error
+      .col-md-4
+      .col-md-4.text-center
+        h1= title
+        if errors
+          .alert.alert-danger
+            for error in errors
+              li= error
     .row
+      .col-md-4
       .col-md-4
         form(action='/people/signup' method='POST')
           .form-group
@@ -14,10 +17,10 @@ include ../nav_notLoggedIn
             input.form-control(type='text' name='email' placeholder='joe@example.com' autofocus value=email)
           .form-group
             label(for='password') Password
-            input.form-control(type='text' name='password' placeholder='Password')
+            input.form-control(type='password' name='password' placeholder='Password')
           .form-group
             label(for='passConfirm') Password Confirmation
-            input.form-control(type='text' name='passConfirm' placeholder='Confirm Password')
+            input.form-control(type='password' name='passConfirm' placeholder='Confirm Password')
           div
             input.btn.btn-primary(type='submit' name='signup' value='Sign Up')
 

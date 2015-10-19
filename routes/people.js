@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var db = require('monk')(process.env.MONGOLAB_URI || 'localhost/authenticate-people-db');
 var peopleCollection = db.get('people');
+var studentCollection = db.get('students');
 var bcrypt = require('bcrypt');
 require('dotenv').load();
 
@@ -11,7 +12,7 @@ router.get('/people', function(req, res, next) {
     res.redirect('/people/loggedIn')
   }
   else {
-    res.render('people/index', { title: 'HOME' });
+    res.render('people/index', { title: 'HOME PAGE' });
   }
 });
 
@@ -147,6 +148,100 @@ router.get('/people/loggedIn', function(req, res, next) {
 });
 
 // STUDENTS //
+
+router.get('/people/students', function(req, res, next) {
+  if(req.session.email) {
+    studentCollection.find({}, function (err, data) {
+      res.render('students/index', { 
+                                    title: 'STUDENTS',
+                                    email_session: req.session.email,
+                                    allStudents: data
+      })
+    })
+  }
+  else {
+    var errors = []
+    errors.push('Please sign up or sign in to view this page')
+    res.render('students/index', {
+                                    errors: errors
+    })
+  }
+});
+
+router.get('/people/students/new', function(req, res, next) {
+  if(req.session.email) {
+    res.render('students/new', { 
+                                  title: 'NEW STUDENT',
+                                  email_session: req.session.email, 
+    })
+  }
+  else {
+    var errors = []
+    errors.push('Please sign up or sign in to view this page')
+    res.render('students/index', {
+                                    errors: errors
+    })
+  }
+});
+
+router.post('/people/students/new', function(req, res, next) {
+  var errors = [];
+  var name = req.body.name;
+  var phone = req.body.phone;
+
+  if(!name) {
+    errors.push('Name can not be blank')
+  }
+  if(!phone) {
+    errors.push('Phone number can not be blank')
+  }
+  if(errors.length) {
+    res.render('students/new', {
+                                  title: 'NEW STUDENT',
+                                  email_session: req.session.email,
+                                  errors: errors,
+                                  name: name,
+                                  phone: phone
+    })
+  }
+  else {
+    studentCollection.find({name: name}, function (err, data) {
+      if(data.length > 0) {
+        errors.push('Name is already registered')
+        res.render('students/new', {
+                                      title: 'NEW STUDENT',
+                                      errors: errors
+        })
+      }
+      else {
+        studentCollection.insert({
+                                  name: name, 
+                                  phone: phone
+        })
+        res.redirect('/people/students')
+      }
+    })
+  }
+})
+
+router.get('/people/students/:id', function(req, res, next) {
+  if(req.session.email) {
+    studentCollection.findOne({_id: req.params.id}, function (err, data) {
+      res.render('students/show', { 
+                                    title: 'STUDENT INFO',
+                                    email_session: req.session.email,
+                                    student: data
+      })
+    })
+  }
+  else {
+    var errors = []
+    errors.push('Please sign up or sign in to view this page')
+    res.render('students/index', {
+                                    errors: errors
+    })
+  }
+});
 
 
 

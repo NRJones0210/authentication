@@ -7,10 +7,13 @@ if errors
 if !errors
   include ../nav_loggedIn
     .container
-      h1 Welcome #{email_session}
-      p You are now logged in!
-      button.btn.btn-default(type="submit") 
-        a(href='/people/students') Students
+      .row.text-center
+        h1= title
+      .row
+        .col-md-3
+        .col-md-6
+          h3 Name: #{student.name}
+          h3 Phone: #{student.phone}
 
 include ../footer
 

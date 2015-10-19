@@ -1,0 +1,21 @@
+include ../nav_loggedIn
+  .container
+    .row.text-center
+      h1= title
+      if errors
+        .alert.alert-danger
+          for error in errors
+            li= error
+    .row
+      .col-md-4
+        form(action='/people/students/new' method='POST')
+          .form-group
+            label(for='name') Student Name
+            input.form-control(type='text' name='name' placeholder='Name' autofocus value=name)
+          .form-group
+            label(for='phone') Student Phone Number
+            input.form-control(type='tel' name='phone' placeholder='xxx-xxx-xxxx' value=phone)
+          .div
+            input.btn.btn-primary(type='submit' name='addStudent' value='Add Student')
+
+include ../footer

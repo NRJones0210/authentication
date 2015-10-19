@@ -7,7 +7,33 @@ if errors
 if !errors
   include ../nav_loggedIn
     .container
-      h1= title
+      .row.text-center
+        h1= title
+      .row
+        .col-md-3
+        .col-md-6
+          table.table.table-striped
+            tbody
+              tr
+                th.text-center Name
+                th.text-center Phone Number
+                th.text-center View
+              for student in allStudents
+                tr.text-center
+                  td= student.name
+                  td= student.phone
+                  td 
+                    a(href='/people/students/' + student._id) View
+      .row
+        .col-md-3
+        .col-md-6.text-center
+          button.btn.btn-default(type="submit") 
+            a(href='/people/students/new') Add New Student
+
+
 
 include ../footer
+
+
+
 
